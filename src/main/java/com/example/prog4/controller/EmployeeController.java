@@ -6,6 +6,8 @@ import com.example.prog4.model.Employee;
 import com.example.prog4.model.EmployeeFilter;
 import com.example.prog4.service.CSVUtils;
 import com.example.prog4.service.EmployeeService;
+import com.lowagie.text.DocumentException;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -17,14 +19,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
-import java.io.ByteArrayOutputStream;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 @Controller
@@ -65,49 +64,49 @@ public class EmployeeController {
     }
 
     @GetMapping("/list/pdf")
-    public ResponseEntity<byte[]> getPdf(HttpSession session) throws Exception {
+    public void exportPdfForEmployeeList(HttpServletResponse response, HttpSession session) throws IOException, DocumentException {
         EmployeeFilter filters = (EmployeeFilter) session.getAttribute("employeeFiltersSession");
         List<Employee> data = employeeService.getAll(filters);
 
-        String htmlContent = generateHtml(data);
-
-        // Generate PDF from HTML content
-        byte[] pdfBytes = generatePdfBytes(htmlContent);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDispositionFormData("attachment", "employees.pdf");
-        headers.setContentLength(pdfBytes.length);
-
-        return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
+        String html = generateHtmlFromEmployees(data); // Generate HTML for the employee list
+        generatePdfFromHtml(html, response); // Generate and send the PDF
     }
 
-    private String generateHtml(List<Employee> data) {
-        Context context = new Context();
-        context.setVariable("employees", data); // Make sure the variable name matches your template
-        return templateEngine.process("employees", context);
+    // ... other methods ...
+
+    private String generateHtmlFromEmployees(List<Employee> employees) {
+        StringBuilder htmlBuilder = new StringBuilder();
+
+        // Begin the HTML structure
+        htmlBuilder.append("<!DOCTYPE html>\n<html><body>");
+
+        // Generate employee list HTML
+        for (Employee employee : employees) {
+            // Customize this part based on your data structure and HTML format
+            htmlBuilder.append("<p>").append(employee.getFirstName()).append(" ").append(employee.getLastName()).append("</p>");
+            // Add other employee details as needed
+        }
+
+        // Close the HTML structure
+        htmlBuilder.append("</body></html>");
+
+        return htmlBuilder.toString();
     }
 
-    private byte[] generatePdfBytes(String htmlContent) throws Exception {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    private void generatePdfFromHtml(String html, HttpServletResponse response) throws IOException, DocumentException {
+        String outputFileName = "employees.pdf";
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "fil pdf" + outputFileName);
+
+        OutputStream outputStream = response.getOutputStream();
 
         ITextRenderer renderer = new ITextRenderer();
-        renderer.setDocumentFromString(htmlContent);
+        renderer.setDocumentFromString(html);
+
         renderer.layout();
         renderer.createPDF(outputStream);
-        renderer.finishPDF();
 
-        return outputStream.toByteArray();
-    }
-
-    private String loadCssFromFile(String filePath) {
-        try {
-            byte[] cssBytes = Files.readAllBytes(Paths.get(filePath));
-            return new String(cssBytes, StandardCharsets.UTF_8);
-        } catch (Exception e) {
-            // Handle file loading error
-            return ""; // Return an empty string if an error occurs
-        }
+        outputStream.close();
     }
 }
 
