@@ -24,6 +24,7 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Base64;
 import java.util.List;
 
 @Controller
@@ -74,19 +75,42 @@ public class EmployeeController {
 
     // ... other methods ...
 
-    private String generateHtmlFromEmployees(List<Employee> employees) {
+    private String generateHtmlFromEmployees(List<Employee> employees) throws IOException {
         StringBuilder htmlBuilder = new StringBuilder();
 
         // Begin the HTML structure
-        htmlBuilder.append("<!DOCTYPE html>\n<html><body>");
-
+        htmlBuilder.append("<!DOCTYPE html>\n<html><head><style>")
+                .append("body { font-family: Arial, sans-serif; }")
+                .append("table { width: 100%; border-collapse: collapse; margin-top: 20px; }")
+                .append("th, td { border: 1px solid #000; padding: 8px; text-align: left; }")
+                .append("</style></head><body>");
+        htmlBuilder.append("<table>");
+        htmlBuilder.append("<tr><th>Image</th><th>Last name</th><th>First name</th><th>CNAPS</th><th>Address</th><th>Phone</th><th>CIN</th><th>Departure date</th><th>Entrance date</th><th>Personal Email</th><th>Professional Email</th></tr>");
         // Generate employee list HTML
         for (Employee employee : employees) {
-            // Customize this part based on your data structure and HTML format
-            htmlBuilder.append("<p>").append(employee.getFirstName()).append(" ").append(employee.getLastName()).append("</p>");
-            // Add other employee details as needed
+            htmlBuilder.append("<tr>");
+            if (employee.getImage() != null && !employee.getImage().isEmpty()) {
+                // Convert image data to base64 and include it in the HTML
+                String imageData = Base64.getEncoder().encodeToString(employee.getImage().getBytes());
+                htmlBuilder.append("<img src='data:image/jpeg;base64,").append(imageData).append("' width='100' height='100'/>");
+            } else {
+                htmlBuilder.append("No Image");
+            }
+            htmlBuilder
+                    .append("<td>").append(employee.getLastName()).append("</td>")
+                    .append("<td>").append(employee.getFirstName()).append("</td>")
+                    .append("<td>").append(employee.getCnaps()).append("</td>")
+                    .append("<td>").append(employee.getAddress()).append("</td>")
+                    .append("<td>").append(employee.getPhones()).append("</td>")
+                    .append("<td>").append(employee.getCin()).append("</td>")
+                    .append("<td>").append(employee.getDepartureDate()).append("</td>")
+                    .append("<td>").append(employee.getEntranceDate()).append("</td>")
+                    .append("<td>").append(employee.getPersonalEmail()).append("</td>")
+                    .append("<td>").append(employee.getProfessionalEmail()).append("</td>")
+                    .append("</tr>");
         }
 
+        htmlBuilder.append("</table>");
         // Close the HTML structure
         htmlBuilder.append("</body></html>");
 
@@ -102,6 +126,9 @@ public class EmployeeController {
 
         ITextRenderer renderer = new ITextRenderer();
         renderer.setDocumentFromString(html);
+
+        String baseUrl = "http://localhost:8080";
+        renderer.getSharedContext().setBaseURL(baseUrl);
 
         renderer.layout();
         renderer.createPDF(outputStream);
