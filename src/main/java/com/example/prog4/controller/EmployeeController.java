@@ -75,9 +75,10 @@ public class EmployeeController {
 
     public String generateDocument(List<Employee> data) {
         Context context = new Context();
-        context.setVariable("employee_show", data);
-        return templateEngine.process("employees", context); // Use your Thymeleaf template name
+        context.setVariable("employees", data);
+        return templateEngine.process("employee_pdf", context);
     }
+
 
     public void generatePdfFromHtml(String html, HttpServletResponse response) throws IOException, DocumentException {
         String outputFileName = "thymeleaf.pdf";
