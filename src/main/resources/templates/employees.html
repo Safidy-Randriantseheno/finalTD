@@ -1,11 +1,87 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8"/>
+    <style>
+        /* Styles pour le contenu */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
 
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+        /* Styles pour les filtres */
+        .form-label {
+            font-weight: bold;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .my-3 {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+    </style>
 </head>
 <body>
-
+<!-- Votre contenu HTML existant -->
 <div class="container py-5">
     <div>
         <a href="/employee/create">
@@ -22,12 +98,52 @@
         </a>
     </div>
     <!-- Vos filtres ici -->
-    <div class="container mt-3">
-        <form action="/employee/list" class="row g-3" th:object="${employeeFilters}" method="get">
-            <!-- Vos champs de filtre ici -->
-            <div class="my-3 col-12">
-                <button type="submit">Filter</button>
-            </div>
+     <div class="container mt-3">
+                <form action="/employee/list" class="row g-3" th:object="${employeeFilters}" method="get">
+                    <div class="col-md-4 col-12 col-sm-6">
+                        <label for="entrance.begin" class="form-label">Entrance beginning date</label>
+                        <input type="date" name="entrance.begin" class="form-control" id="entrance.begin"></input>
+                    </div>
+                    <div class="col-md-4 col-12 col-sm-6">
+                        <label for="firstName" class="form-label">First name</label>
+                        <input type="text" name="firstName" class="form-control" id="firstName"></input>
+                    </div>
+                    <div class="col-md-4 col-12 col-sm-6">
+                        <label for="entrance.end" class="form-label">Entrance ending date</label>
+                        <input type="date" name="entrance.end" class="form-control" id="entrance.end"></input>
+                    </div>
+                    <div class="col-md-4 col-12 col-sm-6">
+                        <label for="departure.begin" class="form-label">Departure beginning date</label>
+                        <input type="date" name="departure.begin" class="form-control" id="departure.begin"></input>
+                    </div>
+                    <div class="col-md-4 col-12 col-sm-6">
+                        <label for="departure.end" class="form-label">Departure ending date</label>
+                        <input type="date" name="departure.end" class="form-control" id="departure.end"></input>
+                    </div>
+                    <div class="col-md-4 col-12 col-sm-6">
+                        <label for="page" class="form-label">Page</label>
+                        <input type="number" name="page" class="form-control" id="page" min="1"></input>
+                    </div>
+                    <div class="col-md-4 col-12 col-sm-6">
+                        <label for="perPage" class="form-label">Per page</label>
+                        <input type="number" name="perPage" class="form-control" id="perPage" min="5"></input>
+                    </div>
+                    <div class="col-md-4 col-12 col-sm-6">
+                        <label for="orderBy" class="form-label">OrderBy</label>
+                        <select id="orderBy" name="orderBy" class="form-select">
+                            <!-- Options for orderBy -->
+                        </select>
+                    </div>
+                    <div class="col-md-4 col-12 col-sm-6">
+                        <label for="orderDirection" class="form-label">orderDirection</label>
+                        <select id="orderDirection" name="orderDirection" class="form-select">
+                            <!-- Options for orderDirection -->
+                        </select>
+                    </div>
+
+                    <div class="my-3 col-12">
+                        <button type="submit" class="btn btn-primary">Filter</button>
+                    </div>
         </form>
     </div>
     <div class="container">
@@ -46,7 +162,7 @@
             </thead>
             <tbody>
             <tr th:each="employee : *{employees}">
-                <td><img th:src="*{employee.stringImage}" alt="no image"></td>
+                <td><img th:src="*{employee.stringImage}" alt="no image"></img></td>
                 <td><p th:text="*{employee.lastName}"></p></td>
                 <td><p th:text="*{employee.firstName}"></p></td>
                 <td><p th:text="*{employee.sex.toString()}"></p></td>
@@ -66,6 +182,5 @@
         </table>
     </div>
 </div>
-
 </body>
 </html>
