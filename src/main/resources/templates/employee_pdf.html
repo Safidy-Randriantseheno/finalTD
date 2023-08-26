@@ -17,57 +17,92 @@
             background-color: #fff;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
-
-        .table-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
+        .employee-image-container {
+            max-width: 150px;
+            max-height: 150px;
+            overflow: hidden;
         }
 
         .employee-card {
-            width: 48%; /* Each card takes about half of the container width */
+            display: flex;
             margin-bottom: 20px;
             border: 1px solid #ccc;
             padding: 10px;
-            display: flex;
         }
 
-        .employee-card img {
-            max-width: 100px;
-            max-height: 100px;
-            margin-right: 10px;
+        .employee-image {
+            width: 100%;
+            height: auto;
+
         }
 
         .employee-details {
-            flex: 1; /* Occupy remaining space in the card */
+            display: flex;
+
+        }
+
+        .employee-details p {
+            margin-left: 420px;
+        }
+
+        .employee-details-text {
+            margin:0;
+        }
+        .salary-container {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f2f2f2;
+            border: 1px solid #ccc;
+        }
+           .footer {
+        display: flex;
+        justify-content: space-between;
+        background-color: #f8f9fa;
+        padding: 20px;
+    }
+
+    .footer-column {
+        flex: 1;
+        padding: 10px;
+    }
+
+    .footer img {
+        max-width: 100px;
+    }
+        .company-logo {
+            max-width: 150px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
-
 <div class="container py-5">
-
-    <div class="container">
-        <table>
-            <tbody>
-            <div class="container py-5">
-                <div class="table-container">
-                    <div class="employee-card" th:each="employee : ${employees}">
-                        <img th:src="${employee.stringImage}" alt="no image"/>
-                        <div class="employee-details">
-                            <p th:text="${employee.lastName}"></p>
-                            <p th:text="${employee.firstName}"></p>
-                            <p th:text="${employee.sex.toString()}"></p>
-                            <p th:each="position : ${employee.positions}" th:text="${position.name}"></p>
-                            <p th:text="${employee.entranceDate.toString()}"></p>
-                            <p th:text="${employee.departureDate.toString()}"></p>
-                        </div>
-                    </div>
-                </div>
+    <div class="table-container">
+        <div class="employee-card" th:each="employee : ${employees}">
+            <div class="employee-image-container">
+                <img class="employee-image" th:src="${employee.stringImage}" alt="no image"/>
             </div>
-            </tbody>
-        </table>
+            <div class="employee-details">
+                <p class="employee-details-text">FICHE EMPLOYEE</p>
+                <p class="employee-details-text">Nom: <span th:text="${employee.lastName}"></span></p>
+                <p class="employee-details-text">Prénom: <span th:text="${employee.firstName}"></span></p>
+                <p class="employee-details-text">Sexe: <span th:text="${employee.sex.toString()}"></span></p>
+                <p class="employee-details-text">Age: <span  th:text="${T(java.time.LocalDate).now().getYear() - employee.birthDate.getYear()}"></span></p>
+                <p class="employee-details-text">Postes: <span th:each="position : ${employee.positions}" th:text="${position.name}"></span></p>
+                <p class="employee-details-text">Date d'entrée: <span th:text="${employee.entranceDate.toString()}"></span></p>
+                <p class="employee-details-text">Date de départ: <span th:text="${employee.departureDate.toString()}"></span></p>
+                <p class="employee-details-text">Numeuro Cnaps: <span th:text="${employee.cnaps}"></span></p>
+            </div>
+        </div>
+        <div class="salary-container">
+            <p> informations sur le salaire </p>
+            <p>Salaire: </p>
+
+        </div>
     </div>
 </div>
+
+<footer th:replace="~{components/navbar.html :: footer}"></footer>
+
 </body>
 </html>
