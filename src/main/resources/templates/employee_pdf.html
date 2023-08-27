@@ -36,6 +36,7 @@
 
         }
 
+
         .employee-details {
             display: flex;
 
@@ -54,25 +55,78 @@
             background-color: #f2f2f2;
             border: 1px solid #ccc;
         }
-           .footer {
-        display: flex;
-        justify-content: space-between;
-        background-color: #f8f9fa;
-        padding: 20px;
-    }
-
-    .footer-column {
-        flex: 1;
-        padding: 10px;
-    }
-
     .footer img {
         max-width: 100px;
+        justify-content: space-between;
     }
         .company-logo {
-            max-width: 150px;
+            max-width: 100px;
             margin-bottom: 10px;
         }
+
+        /* Styles pour le pied de page */
+      /* Autres styles ... */
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+}
+.footer-group {
+    display: flex;
+    flex: 1;
+    padding: 20px;
+    box-sizing: border-box;
+    justify-content: space-between; /* This will distribute columns with equal space between them */
+}
+
+.footer-column {
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1; /* Each column takes an equal portion of the available space */
+}
+.row{
+        bottom: 0;
+        }
+
+.row1{
+        margin-left: 210px;
+        position: fixed;
+        bottom: 0;
+        }
+.row2{
+        margin-left: 420px;
+        position: fixed;
+        bottom: 0;
+        }
+
+/* Appliquer une largeur de 33.33% pour chaque colonne dans les écrans de taille moyenne */
+@media (min-width: 768px) {
+    .footer-group {
+        width: 100%;
+        max-width: 1200px; /* Limiter la largeur maximale de la section */
+        margin: 0 auto; /* Centrer horizontalement */
+    }
+    .footer-column {
+        flex: 0 0 33.33%; /* 1/3 de la largeur totale */
+        margin-right: 15px; /* Espacement entre les colonnes */
+    }
+    .footer-column:last-child {
+        margin-right: 0; /* Pas d'espacement pour la dernière colonne */
+    }
+
+}
+
+
+
+
     </style>
 </head>
 <body>
@@ -101,21 +155,33 @@
         </div>
     </div>
 </div>
-<footer class="footer">
-    <div class="footer-column">
-        <img class="company-logo" th:src="${companyConf.logo}" alt="Logo de l'entreprise"/>
+<div class="footer">
+    <div class="footer-group">
+        <div class="footer-column">
+            <div class="row">
+            <div class="employee-image-container">
+                <img class="employee-image" th:src="${companyConf.logo}" alt="Logo de l'entreprise"/>
+            </div>
+            </div>
+        </div>
+        <div class="footer-column">
+            <div class="row1">
+            <p>Nom de l'entreprise: <span th:text="${companyConf.name}"></span></p>
+            <p>NIF: <span th:text="${companyConf.taxIdentity.nif}"></span></p>
+            <p>Stat: <span th:text="${companyConf.taxIdentity.stat}"></span></p>
+        </div>
+        </div>
+        <div class="footer-column">
+            <div class="row2">
+            <p>Adresse de l'entreprise: <span th:text="${companyConf.address}"></span></p>
+                <p><strong>Phone:</strong></p>
+                <ul class="list-unstyled" th:each="phone : ${companyConf.phones}">
+                    <li th:text="${phone.value}"></li>
+                </ul>
+            <p>Email: <span th:text="${companyConf.email}"></span></p>
+            </div>
+        </div>
     </div>
-    <div class="footer-column">
-        <p>Nom de l'entreprise: <span th:text="${companyConf.name}"></span></p>
-        <p>NIF: <span th:text="${companyConf.taxIdentity.nif}"></span></p>
-        <p>Stat: <span th:text="${companyConf.taxIdentity.stat}"></span></p>
-    </div>
-    <div class="footer-column">
-        <p>Adresse de l'entreprise: <span th:text="${companyConf.address}"></span></p>
-        <p>Numéro de téléphone: <span th:text="${companyConf.phones}"></span></p>
-        <p>Email: <span th:text="${companyConf.email}"></span></p>
-    </div>
-</footer>
-
+</div>
 </body>
 </html>
