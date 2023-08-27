@@ -1,5 +1,6 @@
 package com.example.prog4.controller;
 
+import com.example.prog4.config.CompanyConf;
 import com.example.prog4.controller.mapper.EmployeeMapper;
 import com.example.prog4.controller.validator.EmployeeValidator;
 import com.example.prog4.model.Employee;
@@ -68,14 +69,16 @@ public class EmployeeController {
     public void exportPdfForEmployeeList(HttpServletResponse response, HttpSession session) throws IOException, DocumentException {
         EmployeeFilter filters = (EmployeeFilter) session.getAttribute("employeeFiltersSession");
         List<Employee> data = employeeService.getAll(filters);
+        CompanyConf conf = new CompanyConf();
 
-        String html = generateDocument(data); // Generate HTML for the employee list
+        String html = generateDocument(data, conf); // Generate HTML for the employee list
         generatePdfFromHtml(html, response); // Generate and send the PDF
     }
 
-    public String generateDocument(List<Employee> data) {
+    public String generateDocument(List<Employee> data, CompanyConf conf) {
         Context context = new Context();
         context.setVariable("employees", data);
+        context.setVariable("companyConf", conf);
         return templateEngine.process("employee_pdf", context);
     }
 

@@ -101,8 +101,21 @@
         </div>
     </div>
 </div>
-
-<footer th:replace="~{components/navbar.html :: footer}"></footer>
+<footer class="footer">
+    <div class="footer-column">
+        <img class="company-logo" th:src="${companyConf.logo}" alt="Logo de l'entreprise"/>
+    </div>
+    <div class="footer-column">
+        <p>Nom de l'entreprise: <span th:text="${companyConf.name}"></span></p>
+        <p>NIF: <span th:text="${companyConf.taxIdentity.nif}"></span></p>
+        <p>Stat: <span th:text="${companyConf.taxIdentity.stat}"></span></p>
+    </div>
+    <div class="footer-column">
+        <p>Adresse de l'entreprise: <span th:text="${companyConf.address}"></span></p>
+        <p>Numéro de téléphone: <span th:text="${companyConf.phones}"></span></p>
+        <p>Email: <span th:text="${companyConf.email}"></span></p>
+    </div>
+</footer>
 
 </body>
 </html>
