@@ -29,6 +29,7 @@ public class Employee implements Serializable {
     private Sex sex;
     private String cin;
     private String salary;
+    private Integer age;
     private String cnaps;
     private String address;
     private Integer childrenNumber;

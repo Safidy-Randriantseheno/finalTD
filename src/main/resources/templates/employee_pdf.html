@@ -141,7 +141,7 @@
                 <p class="employee-details-text">Nom: <span th:text="${employee.lastName}"></span></p>
                 <p class="employee-details-text">Prénom: <span th:text="${employee.firstName}"></span></p>
                 <p class="employee-details-text">Sexe: <span th:text="${employee.sex.toString()}"></span></p>
-                <p class="employee-details-text">Age: <span  th:text="${T(java.time.LocalDate).now().getYear() - employee.birthDate.getYear()}"></span></p>
+                <p class="employee-details-text">Age: <span  th:text="${employee.age}"></span></p>
                 <p class="employee-details-text">Postes: <span th:each="position : ${employee.positions}" th:text="${position.name}"></span></p>
                 <p class="employee-details-text">Date d'entrée: <span th:text="${employee.entranceDate.toString()}"></span></p>
                 <p class="employee-details-text">Date de départ: <span th:text="${employee.departureDate.toString()}"></span></p>

@@ -20,6 +20,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnTransformer;
+import org.hibernate.annotations.Formula;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -43,6 +44,9 @@ public class Employee implements Serializable {
     private String cnaps;
     private String image;
     private String salary;
+    @Formula("EXTRACT(YEAR FROM CURRENT_DATE) - EXTRACT(YEAR FROM birth_date)")
+    private Integer age;
+
     private String address;
     @Column(name = "last_name")
     private String lastName;

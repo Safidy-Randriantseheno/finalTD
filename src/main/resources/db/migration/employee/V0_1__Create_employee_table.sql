@@ -22,6 +22,8 @@ create table if not exists "employee"
     first_name          varchar,
     last_name           varchar not null,
     registration_number varchar not null,
+    salary              varchar not null,
+    age               integer            default 0 check ( children_number > -1 ),
     personal_email      varchar not null unique,
     cin                 varchar not null check ( cin ~ '^[0-9]+$'),
     cnaps               varchar not null check ( cnaps ~ '^[A-Za-z0-9]+$' ),
