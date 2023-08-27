@@ -25,10 +25,10 @@ public class Employee implements Serializable {
 
     private MultipartFile image;
     private String stringImage;
-
     private Csp csp;
     private Sex sex;
     private String cin;
+    private String salary;
     private String cnaps;
     private String address;
     private Integer childrenNumber;
@@ -45,4 +45,5 @@ public class Employee implements Serializable {
 
     private List<Position> positions;
     private List<Phone> phones;
+
 }

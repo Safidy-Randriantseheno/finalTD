@@ -2,7 +2,6 @@ package com.example.prog4.controller.mapper;
 
 import com.example.prog4.model.Employee;
 import com.example.prog4.model.exception.BadRequestException;
-import com.example.prog4.repository.cnaps.entity.EmployeeCnaps;
 import com.example.prog4.repository.employee.PositionRepository;
 import com.example.prog4.repository.employee.entity.Phone;
 import com.example.prog4.repository.employee.entity.Position;
@@ -47,6 +46,7 @@ public class EmployeeMapper {
                     .cnaps(employee.getCnaps())
                     .registrationNumber(employee.getRegistrationNumber())
                     .childrenNumber(employee.getChildrenNumber())
+                    .salary(employee.getSalary())
                     // enums
                     .csp(employee.getCsp())
                     .sex(employee.getSex())
@@ -87,6 +87,7 @@ public class EmployeeMapper {
                 .csp(employee.getCsp())
                 .sex(employee.getSex())
                 .stringImage(employee.getImage())
+                .salary(employee.getSalary())
                 // emails
                 .professionalEmail(employee.getProfessionalEmail())
                 .personalEmail(employee.getPersonalEmail())

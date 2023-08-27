@@ -148,9 +148,9 @@
                 <p class="employee-details-text">Numeuro Cnaps: <span th:text="${employee.cnaps}"></span></p>
             </div>
         </div>
-        <div class="salary-container">
+        <div class="salary-container" th:each="employee : ${employees}">
             <p> informations sur le salaire </p>
-            <p>Salaire: </p>
+            <p>Salaire: <span th:text="${employee.salary}"></span></p>
 
         </div>
     </div>

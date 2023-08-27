@@ -42,6 +42,7 @@ public class Employee implements Serializable {
     private String cin;
     private String cnaps;
     private String image;
+    private String salary;
     private String address;
     @Column(name = "last_name")
     private String lastName;
