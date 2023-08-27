@@ -19,8 +19,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.Period;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -38,9 +36,7 @@ public class EmployeeService {
 
     public com.example.prog4.model.Employee getOne(String id) {
         com.example.prog4.repository.employee.entity.Employee employee = repository.findById(id).orElseThrow(() -> new NotFoundException("Not found id=" + id));
-        int age = calculateAge(employee.getBirthDate());
 
-        employee.setAge(age);
 
         com.example.prog4.model.Employee employeeModel = mapper.toView(employee);
 
@@ -51,12 +47,7 @@ public class EmployeeService {
         }
         return employeeModel;
     }
-    private int calculateAge(LocalDate birthDate) {
-        LocalDate currentDate = LocalDate.now();
-        Period period = Period.between(birthDate, currentDate);
-        return period.getYears();
 
-    }
 
 
     public List<Employee> getAll(EmployeeFilter filter) {
