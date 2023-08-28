@@ -48,13 +48,13 @@ public class Employee implements Serializable {
             "WHEN EXTRACT(MONTH FROM birth_date) > EXTRACT(MONTH FROM CURRENT_DATE) " +
             "OR (EXTRACT(MONTH FROM birth_date) = EXTRACT(MONTH FROM CURRENT_DATE) " +
             "AND EXTRACT(DAY FROM birth_date) > EXTRACT(DAY FROM CURRENT_DATE)) " +
-            "THEN EXTRACT(YEAR FROM CURRENT_DATE) - EXTRACT(YEAR FROM birth_date) + 1 " +
+            "THEN EXTRACT(YEAR FROM CURRENT_DATE) - EXTRACT(YEAR FROM birth_date)  " +
             "ELSE " +
             "CASE " +
             "WHEN EXTRACT(MONTH FROM birth_date) = EXTRACT(MONTH FROM CURRENT_DATE) " +
             "AND EXTRACT(DAY FROM birth_date) = EXTRACT(DAY FROM CURRENT_DATE) " +
             "THEN EXTRACT(YEAR FROM CURRENT_DATE) - EXTRACT(YEAR FROM birth_date) " +
-            "ELSE EXTRACT(YEAR FROM CURRENT_DATE) - EXTRACT(YEAR FROM birth_date) " +
+            "ELSE EXTRACT(YEAR FROM CURRENT_DATE) - EXTRACT(YEAR FROM birth_date) -1" +
             "END " +
             "END")
     private Integer age;
