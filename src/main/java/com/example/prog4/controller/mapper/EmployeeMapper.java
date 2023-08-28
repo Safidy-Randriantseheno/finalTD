@@ -10,7 +10,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -34,7 +33,7 @@ public class EmployeeMapper {
                     positions.add(position1.get());
                 }
             });
-            int age = calculateAge(employee.getBirthDate());
+
             List<Phone> phones = employee.getPhones().stream().map((com.example.prog4.model.Phone fromView) -> phoneMapper.toDomain(fromView, employee.getId())).toList();
 
             com.example.prog4.repository.employee.entity.Employee
@@ -43,7 +42,7 @@ public class EmployeeMapper {
                     .firstName(employee.getFirstName())
                     .lastName(employee.getLastName())
                     .address(employee.getAddress())
-                    .age(age)
+                    .age(employee.getAge())
                     .cin(employee.getCin())
                     .cnaps(employee.getCnaps())
                     .registrationNumber(employee.getRegistrationNumber())
@@ -76,16 +75,9 @@ public class EmployeeMapper {
         }
     }
 
-    private int calculateAge(LocalDate birthDate) {
-        LocalDate currentDate = LocalDate.now();
-        if (birthDate.getDayOfMonth() > currentDate.getDayOfMonth() &&
-                birthDate.getMonthValue() >= currentDate.getMonthValue()) {
 
-            return currentDate.getYear() - birthDate.getYear() - 1;
-        } else {
-            return currentDate.getYear() - birthDate.getYear();
-        }
-    }
+
+
 
     public Employee toView(com.example.prog4.repository.employee.entity.Employee employee) {
         return Employee.builder()
