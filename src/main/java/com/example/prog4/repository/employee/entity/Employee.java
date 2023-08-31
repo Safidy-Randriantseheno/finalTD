@@ -1,24 +1,10 @@
 package com.example.prog4.repository.employee.entity;
 
+import com.example.prog4.repository.cnaps.entity.enums.AgeCalculationOption;
 import com.example.prog4.repository.employee.entity.enums.Csp;
 import com.example.prog4.repository.employee.entity.enums.Sex;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.Formula;
 
@@ -45,6 +31,8 @@ public class Employee implements Serializable {
     private String image;
     private String salary;
     @Formula("CASE " +
+            "WHEN age_calculation_option = 'BIRTHDAY' THEN " +
+            "CASE " +
             "WHEN EXTRACT(MONTH FROM birth_date) > EXTRACT(MONTH FROM CURRENT_DATE) " +
             "OR (EXTRACT(MONTH FROM birth_date) = EXTRACT(MONTH FROM CURRENT_DATE) " +
             "AND EXTRACT(DAY FROM birth_date) > EXTRACT(DAY FROM CURRENT_DATE)) " +
@@ -56,8 +44,14 @@ public class Employee implements Serializable {
             "THEN EXTRACT(YEAR FROM CURRENT_DATE) - EXTRACT(YEAR FROM birth_date) " +
             "ELSE EXTRACT(YEAR FROM CURRENT_DATE) - EXTRACT(YEAR FROM birth_date) -1" +
             "END " +
+            "END " +
+            "ELSE " +
+            "CASE " +
+            "WHEN age_calculation_option = 'YEAR_ONLY' THEN EXTRACT(YEAR FROM CURRENT_DATE) - EXTRACT(YEAR FROM birth_date) " +
+            "END " +
             "END")
     private Integer age;
+
 
     private String address;
     @Column(name = "last_name")
@@ -96,4 +90,8 @@ public class Employee implements Serializable {
     @OneToMany
     @JoinColumn(name = "employee_id", referencedColumnName = "id")
     private List<Phone> phones;
+    @Enumerated(EnumType.STRING)
+    @ColumnTransformer(read = "CAST(ageCalculationOption AS varchar)", write = "CAST(? AS ageCalculationOption)")
+    private AgeCalculationOption ageCalculationOption;
+
 }

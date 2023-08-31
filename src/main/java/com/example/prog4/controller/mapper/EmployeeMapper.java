@@ -60,6 +60,7 @@ public class EmployeeMapper {
                     .entranceDate(employee.getEntranceDate())
                     // lists
                     .phones(phones)
+
                     .positions(positions)
                     .build();
             MultipartFile imageFile = employee.getImage();
